@@ -1,0 +1,6 @@
+{
+  "appId": "com.example.swingcoach",
+  "appName": "SwingCoach",
+  "webDir": "www",
+  "ios": { "contentInset": "never" }
+}

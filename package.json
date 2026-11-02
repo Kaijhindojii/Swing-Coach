@@ -1,0 +1,23 @@
+{
+  "name": "swingcoach",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AI golf swing coach + heart-rate nerves monitor (iPhone + Apple Watch first)",
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "test": "node --test test/*.test.js",
+    "serve": "node serve.js",
+    "cap:add:ios": "npx cap add ios && npx cap sync ios",
+    "cap:add:android": "npx cap add android && npx cap sync android"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.0",
+    "@capacitor/ios": "^6.1.0",
+    "@mediapipe/tasks-vision": "^0.10.14",
+    "@capacitor/android": "^6.1.0"
+  }
+}

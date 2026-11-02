@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#14532d">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SwingCoach">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SwingCoach</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header class="top">
+    <h1>SwingCoach</h1>
+    <button id="btnSettings" class="ghost" aria-label="Settings">Settings</button>
+  </header>
+
+  <main>
+    <!-- ================= SWING ================= -->
+    <section id="tab-swing" class="tab" role="tabpanel">
+      <div class="card">
+        <h2>Analyse a swing</h2>
+        <p class="muted">Put the phone on a tripod behind you, looking down the target line, about hip height. Stand still for a second, swing, hold your finish.</p>
+        <div class="row">
+          <label class="btn primary" for="videoInput">Record or choose a video</label>
+          <input id="videoInput" type="file" accept="video/*" capture="environment" hidden>
+          <label class="btn" for="videoPick">From library</label>
+          <input id="videoPick" type="file" accept="video/*" hidden>
+        </div>
+        <div class="row">
+          <label class="field">Recorded at
+            <select id="fps">
+              <option value="30">30 fps (normal)</option>
+              <option value="60" selected>60 fps</option>
+              <option value="120">120 fps (slow-mo)</option>
+              <option value="240">240 fps (slow-mo)</option>
+            </select>
+          </label>
+        </div>
+        <details>
+          <summary>No video handy? Try a demo swing</summary>
+          <div id="demoButtons" class="row wrap"></div>
+        </details>
+        <div id="progress" class="progress" hidden><div id="progressBar"></div><span id="progressText">Working…</span></div>
+        <p id="swingError" class="error" role="alert" hidden></p>
+      </div>
+      <div id="result"></div>
+    </section>
+
+    <!-- ================= NERVES ================= -->
+    <section id="tab-nerves" class="tab" role="tabpanel" hidden>
+      <div class="card">
+        <h2>Nerves monitor</h2>
+        <p class="muted">Reads your heart rate and compares it with your calm baseline while you stand still. It is a rough indicator of tension, not a medical measure.</p>
+        <div id="sources" class="row wrap"></div>
+        <p id="sourceStatus" class="muted" aria-live="polite"></p>
+      </div>
+
+      <div class="card gauge-card" id="gaugeCard" hidden>
+        <div class="gauge" id="gauge" role="img" aria-label="Nerves gauge">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="track" cx="60" cy="60" r="52"></circle>
+            <circle class="arc" id="gaugeArc" cx="60" cy="60" r="52" transform="rotate(-90 60 60)"></circle>
+          </svg>
+          <div class="gauge-text">
+            <div id="gBpm" class="bpm">--</div>
+            <div class="unit">bpm</div>
+          </div>
+        </div>
+        <div class="gauge-side">
+          <div id="gLevel" class="level">--</div>
+          <div id="gDetail" class="muted"></div>
+        </div>
+      </div>
+
+      <div id="alertBanner" class="banner" hidden></div>
+      <div id="tips"></div>
+
+      <div class="card" id="breathCard" hidden>
+        <h2>Calm down</h2>
+        <div class="pacer-wrap"><div id="pacer" class="pacer"><span id="pacerText">Ready</span></div></div>
+        <p id="pacerSub" class="muted center">Slow breathing with a longer exhale settles your heart rate.</p>
+        <div class="row center">
+          <button id="btnBreathe" class="btn primary">Start breathing</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HISTORY ================= -->
+    <section id="tab-history" class="tab" role="tabpanel" hidden>
+      <div class="card" id="insightCard" hidden>
+        <h2>Nerves and your swing</h2>
+        <ul id="insightList"></ul>
+      </div>
+      <div class="card">
+        <h2>Past swings</h2>
+        <ul id="historyList" class="history"></ul>
+        <p id="historyEmpty" class="muted">Nothing yet. Analyse a swing and it will show up here.</p>
+        <div class="row"><button id="btnClear" class="btn danger" hidden>Clear history</button></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="swing" aria-selected="true">Swing</button>
+    <button role="tab" data-tab="nerves" aria-selected="false">Nerves</button>
+    <button role="tab" data-tab="history" aria-selected="false">History</button>
+  </nav>
+
+  <dialog id="settings">
+    <form method="dialog" id="settingsForm">
+      <h2>Settings</h2>
+      <label class="field">Height (cm)<input id="sHeight" type="number" min="120" max="230" inputmode="numeric"></label>
+      <label class="field">Handicap (optional)<input id="sHandicap" type="number" min="-5" max="54" step="0.1" inputmode="decimal"></label>
+      <label class="field">AI coach endpoint (optional)<input id="sEndpoint" type="url" placeholder="https://your-proxy.example.com/coach"></label>
+      <p class="muted small">Height turns torso-length measurements into centimetres. The endpoint is your own server that forwards to an AI model; no API key is ever stored in this app.</p>
+      <div class="row"><button class="btn primary" value="save">Save</button><button class="btn" value="cancel" formnovalidate>Cancel</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
